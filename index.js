@@ -45,9 +45,8 @@ app.get('/logs/:id',(req,res)=>{
 app.post('/logs',(req,res)=>{
     console.log(':::: '+req.body)
     const log=req.body;
-    let insertQuery=`INSERT INTO public.logs(
-        id, logname, logdate)
-        VALUES (${log.id}, '${log.logname}', 'today');`
+    let insertQuery=`INSERT INTO public.logs(logname)
+        VALUES ('${log.logname}');`
 
      client.query(insertQuery,(err,result)=>{
         if(!err){
@@ -63,8 +62,7 @@ app.post('/logs',(req,res)=>{
 app.put('/logs/:id', (req, res)=> {
     let log = req.body;
     let updateQuery = `update public.logs
-                       set logname = '${log.logname}',
-                       logdate = 'today'
+                       set logname = '${log.logname}'
                        where id = ${log.id}`
 
     client.query(updateQuery, (err, result)=>{
