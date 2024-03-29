@@ -31,6 +31,7 @@ app.get('/logs/:id',(req,res)=>{
 })
 
 app.post('/logs',(req,res)=>{
+    console.log(':::: '+req.body)
     const log=req.body;
     let insertQuery=`INSERT INTO public.logs(
         id, logname, logdate)
