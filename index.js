@@ -23,39 +23,41 @@ client.connect();
 
 
 app.get('/logs',(req,res)=>{
-    client.query(`SELECT * FROM logs`,(err,result)=>{
-        if(!err){
-            res.send(result.rows);
-        }
-    })
-    client.end;
+    client.query(`SELECT * FROM logs`)
+        .then(result => res.send(result.rows))
+        .catch(e => {
+            console.error(e.stack);
+            res.status(500).send('Internal Server Error');
+        })
+        .finally(() => client.end());
 })
 
 
 app.get('/logs/:id',(req,res)=>{
-    client.query(`SELECT * FROM logs where id=${req.params.id}`,(err,result)=>{
-        if(!err){
-            res.send(result.rows);
-        }
-    })
-    client.end;
+    client.query(`SELECT * FROM logs where id=${req.params.id}`)
+        .then(result => res.send(result.rows))
+        .catch(e => {
+            console.error(e.stack);
+            res.status(500).send('Internal Server Error');
+        })
+        .finally(() => client.end());
 })
 
-
 app.post('/logs',(req,res)=>{
-    console.log(':::: '+req.body)
+
     const log=req.body;
+
     let insertQuery=`INSERT INTO public.logs(logname)
         VALUES ('${log.logname}');`
 
-     client.query(insertQuery,(err,result)=>{
-        if(!err){
-            res.send('Insertion was successfull!')
-        }else{
-            console.log(err.message)
-        }
-     })
-    client.end;
+    client.query(insertQuery)
+    .then(result => res.send('Insertion was successfull!'))
+    .catch(e => {
+        console.error(e.stack);
+        res.status(500).send('Internal Server Error');
+    })
+    .finally(() => client.end());
+
 })
 
 
@@ -65,26 +67,26 @@ app.put('/logs/:id', (req, res)=> {
                        set logname = '${log.logname}'
                        where id = ${log.id}`
 
-    client.query(updateQuery, (err, result)=>{
-        if(!err){
-            res.send('Update was successful')
-        }
-        else{ console.log(err.message) }
+    client.query(updateQuery)
+    .then(result => res.send('Update was successfull!'))
+    .catch(e => {
+        console.error(e.stack);
+        res.status(500).send('Internal Server Error');
     })
-    client.end;
+    .finally(() => client.end());
 })
 
 
 app.delete('/logs/:id', (req, res)=> {
-    let insertQuery = `delete from public.logs where id=${req.params.id}`
+    let deleteQuery = `delete from public.logs where id=${req.params.id}`
     
-    client.query(insertQuery, (err, result)=>{
-        if(!err){
-            res.send('Deletion was successful')
-        }
-        else{ console.log(err.message) }
+    client.query(deleteQuery)
+    .then(result => res.send('Deleted!!'))
+    .catch(e => {
+        console.error(e.stack);
+        res.status(500).send('Internal Server Error');
     })
-    client.end;
+    .finally(() => client.end());
 })
 
 
