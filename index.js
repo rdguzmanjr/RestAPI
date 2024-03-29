@@ -30,7 +30,7 @@ app.post('/logs',(req,res)=>{
     const log=req.body;
     let insertQuery=`INSERT INTO public.logs(
         id, logname, logdate)
-        VALUES (${log.id}, '${log.name}', 'today');`
+        VALUES (${log.id}, '${log.logname}', 'today');`
 
      client.query(insertQuery,(err,result)=>{
         if(!err){
@@ -46,9 +46,9 @@ app.post('/logs',(req,res)=>{
 app.put('/logs/:id', (req, res)=> {
     let log = req.body;
     let updateQuery = `update public.logs
-                       set logname = '${log.name}',
-                       logdate = 'todat'
-                       where id = ${user.id}`
+                       set logname = '${log.logname}',
+                       logdate = 'today'
+                       where id = ${log.id}`
 
     client.query(updateQuery, (err, result)=>{
         if(!err){

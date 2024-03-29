@@ -7,7 +7,7 @@ const client=new Client({
     port:process.env.RENDER_PORT,
     password:process.env.RENDER_PASSWORD,
     database:process.env.RENDER_DATABASE,
-   // ssl: true
+   // ssl: true //only for external
 })
 
 module.exports=client
