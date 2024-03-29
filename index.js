@@ -2,15 +2,25 @@ const client=require('./connection.js');
 const express=require('express');
 const app=express();
 const cors = require('cors');
+var bodyParser = require('body-parser')
 
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 app.use(cors())
+
 
 app.listen(process.env.PORT||3000,()=>{
  console.log('Server is now listening at port 3000')
 })
 
+
 client.connect();
+
 
 app.get('/logs',(req,res)=>{
     client.query(`SELECT * FROM logs`,(err,result)=>{
@@ -21,6 +31,7 @@ app.get('/logs',(req,res)=>{
     client.end;
 })
 
+
 app.get('/logs/:id',(req,res)=>{
     client.query(`SELECT * FROM logs where id=${req.params.id}`,(err,result)=>{
         if(!err){
@@ -29,6 +40,7 @@ app.get('/logs/:id',(req,res)=>{
     })
     client.end;
 })
+
 
 app.post('/logs',(req,res)=>{
     console.log(':::: '+req.body)
@@ -64,6 +76,7 @@ app.put('/logs/:id', (req, res)=> {
     client.end;
 })
 
+
 app.delete('/logs/:id', (req, res)=> {
     let insertQuery = `delete from public.logs where id=${req.params.id}`
     
@@ -75,6 +88,7 @@ app.delete('/logs/:id', (req, res)=> {
     })
     client.end;
 })
+
 
 app.get('/a/:a/b/:b',(req,res)=>{
     res.json('about'+req.params)
