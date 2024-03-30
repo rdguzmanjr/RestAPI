@@ -8,7 +8,7 @@ const pool = new Pool({
   database: process.env.RENDER_DATABASE,
   password: process.env.RENDER_PASSWORD,
   port: process.env.RENDER_PORT,
-  ssl: true //only for external
+  //ssl: true //only for external
 })
 
 const getLogs = (request, response) => {
